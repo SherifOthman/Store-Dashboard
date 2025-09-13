@@ -1,4 +1,4 @@
-export const Logo = () => {
+export const Logo = ({ logoWithTitle }: { logoWithTitle: boolean }) => {
   return (
     <div className="flex items-center space-x-2">
       <img
@@ -9,9 +9,11 @@ export const Logo = () => {
         alt="Shop"
       />
 
-      <span className="text-xl font-bold whitespace-nowrap italic">
-        Online Store
-      </span>
+      {logoWithTitle && (
+        <span className="text-xl font-bold whitespace-nowrap italic">
+          Online Store
+        </span>
+      )}
     </div>
   );
 };

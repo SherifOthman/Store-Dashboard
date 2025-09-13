@@ -1,16 +1,13 @@
 import { PanelLeftClose, PanelRightClose } from "lucide-react";
+import { useSidebar } from "../contexts/SidebarContext";
 
-export const ToggleSidebar = ({
-  open,
-  onClick,
-}: {
-  open: boolean;
-  onClick: () => void;
-}) => {
+export const ToggleSidebar = () => {
+  const { open, toggle } = useSidebar();
+
   return (
     <button
-      className="border-border text-popover-foreground/60 cursor-pointer rounded border-2 p-1.5"
-      onClick={onClick}
+      className="text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer rounded p-1.5 transition-colors"
+      onClick={toggle}
     >
       {open ? <PanelLeftClose /> : <PanelRightClose />}
     </button>
