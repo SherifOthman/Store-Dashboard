@@ -1,9 +1,12 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { Sidebar } from "./components/Sidebar";
 import { Header } from "./components/Header";
 import { SidebarProvider } from "./contexts/SidebarContext";
+import { getAuth } from "./utils/Auth";
 
 export const Layout = () => {
+  if (!getAuth()) return <Navigate to="/login" replace />;
+
   return (
     <SidebarProvider>
       <div className="bg-background text-foreground flex">

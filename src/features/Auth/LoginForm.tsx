@@ -1,16 +1,16 @@
 import { LockKeyhole, Mail } from "lucide-react";
 import { ErrorMessage, Input } from "../../components/Input";
 import { Button } from "../../components/Button";
-import { useAuth } from "../../contexts/AuthContext";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { login } from "../../services/authService";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { getAuth } from "../../utils/Auth";
 
 const formSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.email("Invalid email address"),
   password: z.string().min(6, "Password is too short"),
 });
 
@@ -18,7 +18,6 @@ type FormData = z.infer<typeof formSchema>;
 
 export const LoginForm = () => {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
   const [errorMessage, setErrorMessage] = useState<string>("");
   const {
     register,
@@ -31,12 +30,10 @@ export const LoginForm = () => {
   const onSubmit = async (data: FormData) => {
     const res = await login(data.email, data.password);
 
-    if (!res.success) {
-      setErrorMessage(res.message || "");
-    }
-    if (res.data) {
-      setUser(res.data?.user);
+    if (res.success) {
       navigate("/", { replace: true });
+    } else {
+      setErrorMessage(res.message!);
     }
   };
 

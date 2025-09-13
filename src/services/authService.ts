@@ -1,45 +1,50 @@
-import type { ApiResponse, Auth, User } from "../types/apiTypes";
-import { api, request } from "./apiInstance";
+import type { ApiResponse, Auth } from "../types/apiTypes";
+import { clearAuth, setAuth } from "../utils/Auth";
 
-let accessToken: string | null = null;
-
-export const setAccessToken = (token: string) => {
-  accessToken = token;
-};
-
-export const getAccessToken = (): string | null => accessToken;
-
-export const clearAccessToken = () => {
-  accessToken = null;
-};
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export async function login(
   email: string,
   password: string,
 ): Promise<ApiResponse<Auth>> {
-  const res = await request<Auth>("post", "auth/signin", {
-    email,
-    password,
-  });
+  try {
+    const res = await fetch(`${apiUrl}auth/signin`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-  if (res.data) {
-    setAccessToken(res.data.accessToken);
+    const data: ApiResponse<Auth> = await res.json();
+
+    if (res.ok && data.success && data.data) {
+      setAuth(data.data); // store tokens + user info
+    }
+
+    return data;
+  } catch (error: any) {
+    return {
+      success: false,
+    };
   }
-
-  return res;
 }
 
 export async function logout(): Promise<void> {
-  await api.post("auth/logout");
-  clearAccessToken();
+  clearAuth();
+  await fetch(`${apiUrl}auth/logout`, { method: "POST" });
 }
 
-export async function refreshToken(): Promise<ApiResponse<Auth>> {
-  const res = await request<Auth>("post", "auth/refreshToken");
+export async function refreshToken(): Promise<boolean> {
+  const res = await fetch(`${apiUrl}auth/refresh`, {
+    method: "POST",
+    credentials: "include",
+  });
+  const data: ApiResponse<Auth> = await res.json();
 
-  if (res.data) {
-    setAccessToken(res.data.accessToken);
+  if (res.ok && data.success && data.data) {
+    setAuth(data.data); // update auth with new token
+  } else {
+    return false;
   }
 
-  return res;
+  return true;
 }
