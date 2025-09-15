@@ -9,7 +9,7 @@ export const Sidebar = () => {
   return (
     <aside
       className={cn(
-        "bg-sidebar text-sidebar-foreground sticky top-0 z-20 flex h-screen w-64 flex-col overflow-hidden p-2 shadow-md transition-[width] duration-500 dark:shadow-gray-800",
+        "bg-sidebar text-sidebar-foreground border-foreground/40 sticky top-0 z-20 flex h-screen w-64 flex-col overflow-hidden border-r p-2 transition-[width] duration-500",
         !open && "w-14",
       )}
     >

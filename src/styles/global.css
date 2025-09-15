@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@config '../../tailwind.config.ts';
 
+@custom-variant dark (&:where(.dark, .dark *));
+/* 
 @theme base {
   --color-radius: 0.65rem;
   --color-background: oklch(1 0 0);
@@ -70,4 +72,4 @@
   --color-sidebar-accent-foreground: oklch(0.985 0 0);
   --color-sidebar-border: oklch(1 0 0 / 10%);
   --color-sidebar-ring: oklch(0.556 0 0);
-}
+} */

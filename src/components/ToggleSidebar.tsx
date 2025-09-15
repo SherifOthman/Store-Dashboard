@@ -1,15 +1,13 @@
 import { PanelLeftClose, PanelRightClose } from "lucide-react";
 import { useSidebar } from "../contexts/SidebarContext";
+import { IconButton } from "@material-tailwind/react";
 
 export const ToggleSidebar = () => {
   const { open, toggle } = useSidebar();
 
   return (
-    <button
-      className="text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer rounded p-1.5 transition-colors"
-      onClick={toggle}
-    >
+    <IconButton variant="ghost" onClick={toggle}>
       {open ? <PanelLeftClose /> : <PanelRightClose />}
-    </button>
+    </IconButton>
   );
 };

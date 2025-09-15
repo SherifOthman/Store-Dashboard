@@ -10,6 +10,7 @@ export async function login(
   try {
     const res = await fetch(`${apiUrl}auth/signin`, {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
@@ -28,9 +29,17 @@ export async function login(
   }
 }
 
-export async function logout(): Promise<void> {
+export async function logout(): Promise<boolean> {
+  const res = await fetch(`${apiUrl}auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    return false;
+  }
   clearAuth();
-  await fetch(`${apiUrl}auth/logout`, { method: "POST" });
+  return true;
 }
 
 export async function refreshToken(): Promise<boolean> {

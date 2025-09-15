@@ -1,10 +1,7 @@
 import {
   Boxes,
-  Home,
-  HomeIcon,
   LayoutDashboard,
   PackageSearch,
-  PinIcon,
   type LucideIcon,
 } from "lucide-react";
 import { SidebarLink } from "./SidebarLink";
