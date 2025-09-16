@@ -31,7 +31,7 @@ const links: LinkType[] = [
   },
 ];
 
-export const SidebarNav = () => {
+export const SidebarNav = ({ onlyIcons }: { onlyIcons: boolean }) => {
   const location = useLocation();
 
   return (
@@ -42,6 +42,7 @@ export const SidebarNav = () => {
           to={link.href}
           icon={link.icon}
           selected={location.pathname === link.href}
+          onlyIcons={onlyIcons}
         >
           {link.title}
         </SidebarLink>

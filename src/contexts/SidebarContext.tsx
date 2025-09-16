@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorge";
-import { useIsMobile } from "../hooks/useMobile";
 
 type SidebarContextType = {
   open: boolean;
@@ -17,9 +16,7 @@ const initalState: SidebarContextType = {
 const SidebarContext = createContext<SidebarContextType>(initalState);
 
 const SidebarProvider = ({ children }: { children: React.ReactNode }) => {
-  const isMobile = useIsMobile();
-
-  const [open, setOpen] = useLocalStorage<boolean>("sidebar", !isMobile);
+  const [open, setOpen] = useLocalStorage<boolean>("sidebar", false);
 
   const toggle = () => {
     setOpen((prev) => !prev);

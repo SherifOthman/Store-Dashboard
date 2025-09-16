@@ -2,9 +2,12 @@ import { Avatar, Menu, MenuTrigger } from "@material-tailwind/react";
 import { LogOut, Settings, User } from "lucide-react";
 import { logout } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { getAuth } from "../../utils/Auth";
 
 export const UserMenue = () => {
   const navigate = useNavigate();
+  const auth = getAuth();
+  const fullName = auth?.user.firstName + " " + auth?.user.lastName;
 
   const logOut = async () => {
     if (await logout()) navigate("login");
@@ -12,9 +15,14 @@ export const UserMenue = () => {
 
   return (
     <Menu>
-      <MenuTrigger as={Avatar} alt="profile-picture" src="profile.jpg" />
+      <MenuTrigger
+        as={Avatar}
+        src="profile.jpg"
+        alt="Profile picture"
+        className="m-0 p-0"
+      />
       <Menu.Content>
-        <Menu.Item>
+        <Menu.Item onClick={() => navigate("profile")}>
           <User className="mr-2 h-[18px] w-[18px]" /> My Profile
         </Menu.Item>
         <Menu.Item>

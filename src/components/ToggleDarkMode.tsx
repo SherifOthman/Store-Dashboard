@@ -6,7 +6,7 @@ export const ToggleDarkMode = () => {
   const { isDark, ToggleTheme } = useDarkMode();
 
   return (
-    <IconButton variant="ghost" onClick={ToggleTheme}>
+    <IconButton variant="ghost" onClick={ToggleTheme} isCircular>
       {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
     </IconButton>
   );

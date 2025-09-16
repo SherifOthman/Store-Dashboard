@@ -17,12 +17,13 @@ export async function login(
 
     const data: ApiResponse<Auth> = await res.json();
 
-    if (res.ok && data.success && data.data) {
+    if (res.ok && data.data) {
       setAuth(data.data); // store tokens + user info
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
+    console.error("Failed to login", error);
     return {
       success: false,
     };
@@ -30,30 +31,34 @@ export async function login(
 }
 
 export async function logout(): Promise<boolean> {
-  const res = await fetch(`${apiUrl}auth/logout`, {
-    method: "POST",
-    credentials: "include",
-  });
+  try {
+    const res = await fetch(`${apiUrl}auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
 
-  if (!res.ok) {
-    return false;
+    if (!res.ok) return false;
+
+    clearAuth();
+  } catch (error) {
+    console.error("Failded to logout", error);
   }
-  clearAuth();
   return true;
 }
 
 export async function refreshToken(): Promise<boolean> {
-  const res = await fetch(`${apiUrl}auth/refresh`, {
-    method: "POST",
-    credentials: "include",
-  });
-  const data: ApiResponse<Auth> = await res.json();
+  try {
+    const res = await fetch(`${apiUrl}auth/refresh`, {
+      method: "POST",
+      credentials: "include",
+    });
+    const data: ApiResponse<Auth> = await res.json();
 
-  if (res.ok && data.success && data.data) {
-    setAuth(data.data); // update auth with new token
-  } else {
-    return false;
+    if (!res.ok) return false;
+
+    if (data.data) setAuth(data?.data); // update auth with new token
+  } catch (err) {
+    console.error("Failed to refresh token", err);
   }
-
   return true;
 }

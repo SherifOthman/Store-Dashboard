@@ -17,6 +17,7 @@ type FormData = z.infer<typeof formSchema>;
 export const LoginForm = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string>("");
+
   const {
     register,
     handleSubmit,
@@ -27,8 +28,6 @@ export const LoginForm = () => {
 
   const onSubmit = async (data: FormData) => {
     const res = await login(data.email, data.password);
-
-    console.log(res);
 
     if (res.success) {
       navigate("/", { replace: true });

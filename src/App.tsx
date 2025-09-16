@@ -6,6 +6,7 @@ import { Products } from "./pages/Products";
 import { NotFound } from "./pages/NotFound";
 import { Layout } from "./Layout";
 import { Login } from "./pages/Login";
+import { Profile } from "./pages/Profile";
 
 export const App = () => {
   return (
@@ -15,6 +16,7 @@ export const App = () => {
           <Route index element={<Dashboard />} />
           <Route path="categories" element={<Categories />} />
           <Route path="products" element={<Products />} />
+          <Route path="Profile" element={<Profile />} />
         </Route>
         <Route path="login" element={<Login />} />
         <Route path="*" element={<NotFound />} />

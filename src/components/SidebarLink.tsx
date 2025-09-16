@@ -1,12 +1,12 @@
 import type { LucideIcon } from "lucide-react";
 import { Link, type LinkProps } from "react-router-dom";
 import { cn } from "../utils/cn";
-import { useSidebar } from "../contexts/SidebarContext";
 
 type SidebarLinkProps = {
   to: string;
   selected?: boolean;
   icon: LucideIcon;
+  onlyIcons: boolean;
 } & LinkProps;
 
 export const SidebarLink = ({
@@ -15,23 +15,22 @@ export const SidebarLink = ({
   selected = false,
   children,
   className,
+  onlyIcons,
   ...rest
 }: SidebarLinkProps) => {
-  const { open } = useSidebar();
-
   return (
     <Link
       to={to}
       className={cn(
-        "text-sidebar-foreground hover:bg-primary hover:text-primary-foreground flex gap-2 rounded p-3 transition-colors duration-300",
-        !open && "px-2 py-2",
+        "text-sidebar-foreground hover:bg-primary hover:text-primary-foreground flex gap-2 rounded transition-colors duration-300",
+        onlyIcons ? "p-2" : "p-3",
         selected && "bg-primary text-primary-foreground font-bold",
         className,
       )}
       {...rest}
     >
       <Icon />
-      {open && children}
+      {!onlyIcons && children}
     </Link>
   );
 };
