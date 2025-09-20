@@ -7,16 +7,19 @@ import { NotFound } from "./pages/NotFound";
 import { Layout } from "./Layout";
 import { Login } from "./pages/Login";
 import { Profile } from "./pages/Profile";
+import { PortectedLayout } from "./pages/ProtectedLayout";
 
 export const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="categories" element={<Categories />} />
-          <Route path="products" element={<Products />} />
-          <Route path="Profile" element={<Profile />} />
+        <Route element={<PortectedLayout />}>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="categories" element={<Categories />} />
+            <Route path="products" element={<Products />} />
+            <Route path="Profile" element={<Profile />} />
+          </Route>
         </Route>
         <Route path="login" element={<Login />} />
         <Route path="*" element={<NotFound />} />

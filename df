@@ -1,0 +1,23 @@
+[33mcommit 1683a3d7287786df251119516b26c84ee3030ea0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Sherif Ali <elemlak202099@gmail.com>
+Date:   Mon Sep 15 19:38:10 2025 +0300
+
+    install material tailwind
+
+[33mcommit f6a5d3ea0f361341360e25830d215875e91f2bd5[m
+Author: Sherif Ali <elemlak202099@gmail.com>
+Date:   Sat Sep 13 22:44:15 2025 +0300
+
+    change from axios to fetch
+
+[33mcommit a42744ddaba264ef19889edcbe5b18554c9ccdbd[m
+Author: Sherif Ali <elemlak202099@gmail.com>
+Date:   Sat Sep 13 18:51:24 2025 +0300
+
+    add athentication
+
+[33mcommit 9b80b0da4956a1b1a5d23a73a516c6e710a195da[m
+Author: Sherif Ali <elemlak202099@gmail.com>
+Date:   Sun Sep 7 12:50:02 2025 +0300
+
+    initial commit

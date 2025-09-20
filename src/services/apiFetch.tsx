@@ -1,6 +1,5 @@
 import type { ApiResponse } from "../types/apiTypes";
-import { getAuth } from "../utils/Auth";
-import { refreshToken, logout } from "./authService";
+import { refreshToken, logout, getAccessToken } from "./authService";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -51,14 +50,14 @@ const makeRequest = async (
   endpoint: string,
   data?: unknown,
 ): Promise<Response> => {
-  const auth = getAuth();
+  const token = getAccessToken();
 
   return fetch(`${apiUrl}${endpoint}`, {
     method,
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      ...(auth ? { Authorization: `Bearer ${auth?.accessToken}` } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: data ? JSON.stringify(data) : undefined,
   });

@@ -23,5 +23,4 @@ export enum UserRoles {
 
 export type Auth = {
   accessToken: string;
-  user: User;
 };

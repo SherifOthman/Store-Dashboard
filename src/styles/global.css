@@ -1,3 +1,24 @@
 @import "tailwindcss";
 
 @config '../../tailwind.config.ts';
+
+.loader {
+  width: fit-content;
+  font-size: 40px;
+  font-family: system-ui, sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #0000;
+  -webkit-text-stroke: 1px #6028ff;
+  background: conic-gradient(#6028ff 0 0) 50%/0 100% no-repeat text;
+  animation: l4 1.5s linear infinite;
+}
+
+.loader:before {
+  content: "Loading";
+}
+@keyframes l4 {
+  to {
+    background-size: 120% 100%;
+  }
+}

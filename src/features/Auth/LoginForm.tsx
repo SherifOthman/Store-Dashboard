@@ -1,11 +1,11 @@
-import { Input, Button, Typography } from "@material-tailwind/react";
+import { Input, Button, Typography, Spinner } from "@material-tailwind/react";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { login } from "../../services/authService";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lock, User } from "lucide-react";
+import { login } from "../../services/authService";
 
 const formSchema = z.object({
   email: z.email("Invalid email address"),
@@ -16,30 +16,29 @@ type FormData = z.infer<typeof formSchema>;
 
 export const LoginForm = () => {
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [serverErrorMessage, setServerErrorMessage] = useState<string>("");
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
+    formState: { errors, isSubmitting },
+  } = useForm({
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit = async (data: FormData) => {
     const res = await login(data.email, data.password);
-
     if (res.success) {
       navigate("/", { replace: true });
     } else {
-      setErrorMessage(res.message!);
+      setServerErrorMessage(res.message!);
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col">
-      <Typography type="small" color="error">
-        {errorMessage}
+      <Typography type="small" color="error" className="text-center">
+        {serverErrorMessage}
       </Typography>
       <div className="mt-2 mb-4 space-y-1.5">
         <Typography
@@ -90,7 +89,10 @@ export const LoginForm = () => {
           {errors.password?.message || ""}
         </Typography>
       </div>
-      <Button>Sign In</Button>
+      <Button>
+        {isSubmitting && <Spinner className="mr-2" />}
+        Sign In
+      </Button>
     </form>
   );
 };

@@ -1,10 +1,10 @@
 import { Navigate } from "react-router-dom";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { LoginForm } from "../features/Auth/LoginForm";
-import { getAuth } from "../utils/Auth";
+import { getAccessToken } from "../services/authService";
 
 export const Login = () => {
-  if (getAuth()) return <Navigate to="/" replace />;
+  if (getAccessToken()) return <Navigate to="/" replace />;
 
   return (
     <main className="bg-background/95 flex h-dvh items-center justify-center">
