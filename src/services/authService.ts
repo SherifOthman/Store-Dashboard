@@ -1,13 +1,7 @@
 import type { ApiResponse, Auth } from "../types/apiTypes";
+import { clearAccessToken, setAccessToken } from "./authStorge";
 
 const apiUrl = import.meta.env.VITE_API_URL;
-
-let accessToken: string | null = null;
-
-export const setAccessToken = (token: string | null) => {
-  accessToken = token;
-};
-export const getAccessToken = () => accessToken;
 
 export async function login(
   email: string,
@@ -42,7 +36,7 @@ export async function logout(): Promise<boolean> {
 
   if (!res.ok) return false;
 
-  setAccessToken(null);
+  clearAccessToken();
   return true;
 }
 

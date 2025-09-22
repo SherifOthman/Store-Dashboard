@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { LoginForm } from "../features/Auth/LoginForm";
-import { getAccessToken } from "../services/authService";
+import { getAccessToken } from "../services/authStorge";
 
 export const Login = () => {
   if (getAccessToken()) return <Navigate to="/" replace />;

@@ -1,5 +1,6 @@
 import type { ApiResponse } from "../types/apiTypes";
-import { refreshToken, logout, getAccessToken } from "./authService";
+import { refreshToken, logout } from "./authService";
+import { getAccessToken } from "./authStorge";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -15,6 +16,7 @@ export async function request<T>(
     if (response.status === 401) {
       if (!(await refreshToken())) {
         await logout(); // force logout if refresh fails
+        window.location.replace("/login");
         return {
           success: false,
           message: "Unauthorized",
@@ -27,20 +29,12 @@ export async function request<T>(
 
     const json: ApiResponse<T> = await response.json();
 
-    if (!response.ok) {
-      return {
-        success: false,
-        message: json.message || "Request failed",
-        errors: json.errors || [],
-      };
-    }
-
     return json;
-  } catch (error: any) {
+  } catch (error) {
+    console.error("Network error", error);
     return {
       success: false,
-      message: error.message || "Network error",
-      errors: [],
+      message: "Network error",
     };
   }
 }

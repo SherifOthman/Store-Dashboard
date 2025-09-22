@@ -16,7 +16,7 @@ export const UserMenue = () => {
         as={Avatar}
         src="profile.jpg"
         alt="Profile picture"
-        className="m-0 p-0"
+        className="m-0 h-10 w-10 p-0"
       />
       <Menu.Content>
         <Menu.Item onClick={() => navigate("profile")}>
