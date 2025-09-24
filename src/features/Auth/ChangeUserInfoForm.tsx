@@ -6,11 +6,11 @@ import { UserAvatar } from "./UserAvatar";
 import { Button, Card, CardBody, CardFooter } from "@material-tailwind/react";
 import { useCurrentUser } from "./useCurrentUser";
 import { Loader } from "../../components/Loader";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 
 const UserInfoSchema = z.object({
   name: z.string().min(6, "Name must be at least 6 characters long"),
-  email: z.string().email("Please enter a valid email address"),
+  email: z.email("Please enter a valid email address"),
   phone: z.string().regex(/^\d{11}$/, "Phone number must be exactly 11 digits"),
   profilePicture: z.instanceof(File).optional(),
 });

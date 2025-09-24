@@ -10,6 +10,8 @@ import {
 } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { TextField } from "../../components/TextField";
+import { changePassword } from "../../services/usersService";
 
 const ChangePasswordSchema = z
   .object({
@@ -31,18 +33,19 @@ export const ChangePasswordForm = () => {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { isSubmitting, errors },
   } = useForm<ChangePasswordFormType>({
     resolver: zodResolver(ChangePasswordSchema),
   });
 
-  const onSubmit = (data: ChangePasswordFormType) => {
-    console.log(data);
+  const onSubmit = async (data: ChangePasswordFormType) => {
+    changePassword(data.password, data.newPassword);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Card className="mx-auto mt-5 w-3/4 p-4">
+      <Card className="mx-auto mt-5 w-3/4 p-4 pb-0">
         <CardHeader>
           <Typography color="default" className="font-bold">
             Change Password
@@ -52,76 +55,28 @@ export const ChangePasswordForm = () => {
           </Typography>
         </CardHeader>
         <CardBody>
-          <Typography
-            as="label"
-            color="default"
-            htmlFor="currentPassword"
-            type="small"
-            className="font-semibold"
-          >
-            Current Password
-          </Typography>
-          <Input
+          <TextField
+            label="Current Password"
             placeholder="••••••••••••••"
-            type="password"
-            className="mt-1"
             {...register("password")}
+            error={errors.password?.message}
           />
-          <Typography
-            color="error"
-            type="small"
-            className="mt-1 mb-2 block h-4 w-full"
-          >
-            {errors.password?.message}
-          </Typography>
 
-          <Typography
-            as="label"
-            color="default"
-            htmlFor="currentPassword"
-            type="small"
-            className="mb-5 font-semibold"
-          >
-            New Password
-          </Typography>
-          <Input
+          <TextField
+            label="New Password"
             placeholder="••••••••••••••"
-            type="password"
-            className="mt-1"
             {...register("newPassword")}
+            error={errors.password?.message}
           />
-          <Typography
-            color="error"
-            type="small"
-            className="mb-2 block h-4 w-full"
-          >
-            {errors.newPassword?.message}
-          </Typography>
 
-          <Typography
-            as="label"
-            color="default"
-            htmlFor="currentPassword"
-            type="small"
-            className="mb-5 font-semibold"
-          >
-            Confirm Password
-          </Typography>
-          <Input
+          <TextField
+            label="Confirm Password"
             placeholder="••••••••••••••"
-            type="password"
-            className="mt-1"
             {...register("confirmPassword")}
+            error={errors.password?.message}
           />
-          <Typography
-            color="error"
-            type="small"
-            className="mt-1 block h-4 w-full"
-          >
-            {errors.confirmPassword?.message}
-          </Typography>
         </CardBody>
-        <CardFooter className="flex justify-end gap-3">
+        <CardFooter className="flex justify-end gap-x-3">
           <Button className="cursor-pointer">Save</Button>
           <Button
             type="reset"

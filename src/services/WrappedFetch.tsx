@@ -4,7 +4,7 @@ import { getAccessToken } from "./authStorge";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export async function request<T>(
+export async function request<T = null>(
   method: "GET" | "POST" | "PUT" | "DELETE",
   endpoint: string,
   data?: unknown,
