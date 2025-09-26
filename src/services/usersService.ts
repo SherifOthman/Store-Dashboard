@@ -11,11 +11,14 @@ export const updateCurrentUser = async (user: User) => {
   return res;
 };
 
-export const changePassword = async (
-  currentPassword: string,
-  newPassword: string,
-) => {
-  const res = await request("POST", "users/change-password", {
+export const changePassword = async ({
+  currentPassword,
+  newPassword,
+}: {
+  currentPassword: string;
+  newPassword: string;
+}) => {
+  const res = await request("POST", "/users/change-password", {
     currentPassword,
     newPassword,
   });

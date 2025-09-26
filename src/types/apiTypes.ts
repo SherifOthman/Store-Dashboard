@@ -1,8 +1,13 @@
+export type ErrorItem = {
+  message: string;
+  field: string;
+};
+
 export type ApiResponse<T> = {
   success: boolean;
   message?: string;
   data?: T;
-  errors?: Record<string, string>[];
+  errors?: ErrorItem[];
 };
 
 export type User = {

@@ -18,22 +18,21 @@ const UserInfoSchema = z.object({
 export type UserInfoFormType = z.infer<typeof UserInfoSchema>;
 
 export const ChangeUserInfoForm = () => {
-  const { currentUser, error, isLoading } = useCurrentUser();
-  const user = currentUser?.data;
+  const { currentUser, isLoading, error } = useCurrentUser();
 
   const methods = useForm<UserInfoFormType>({
     resolver: zodResolver(UserInfoSchema),
   });
 
   useEffect(() => {
-    if (user)
+    if (currentUser)
       methods.reset({
-        name: user.firstName + " " + user.lastName,
-        email: user.email,
-        phone: user.phoneNumber,
+        name: currentUser.firstName + " " + currentUser.lastName,
+        email: currentUser.email,
+        phone: currentUser.phoneNumber,
         profilePicture: new File([], ""),
       });
-  }, [user, methods]);
+  }, [currentUser, methods]);
 
   const onSubmit = async (data: UserInfoFormType) => {
     console.log(data);

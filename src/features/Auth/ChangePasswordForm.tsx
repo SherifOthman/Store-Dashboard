@@ -5,17 +5,21 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Input,
+  Spinner,
   Typography,
 } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { TextField } from "../../components/TextField";
-import { changePassword } from "../../services/usersService";
+import { useChangePassword } from "./useChangePassword";
+
+import { useEffect } from "react";
+import { setBackendErrors } from "../../utils/helpers";
+import { ApiError } from "../../services/ApiError";
 
 const ChangePasswordSchema = z
   .object({
-    password: z.string().nonempty("Current password is required"),
+    currentPassword: z.string().nonempty("Current password is required"),
     newPassword: z
       .string()
       .min(6, "New password must be at least 6 characters long"),
@@ -29,18 +33,30 @@ const ChangePasswordSchema = z
 type ChangePasswordFormType = z.infer<typeof ChangePasswordSchema>;
 
 export const ChangePasswordForm = () => {
+  const { isPending, changePassword, error } = useChangePassword();
   const {
     register,
     handleSubmit,
     reset,
     setError,
-    formState: { isSubmitting, errors },
+    formState: { errors },
   } = useForm<ChangePasswordFormType>({
     resolver: zodResolver(ChangePasswordSchema),
   });
 
+  useEffect(() => {
+    if (error instanceof ApiError) {
+      setBackendErrors<ChangePasswordFormType>(setError, error.errors);
+    }
+  }, [error, setError]);
+
   const onSubmit = async (data: ChangePasswordFormType) => {
-    changePassword(data.password, data.newPassword);
+    await changePassword({
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+    });
+
+    reset();
   };
 
   return (
@@ -57,27 +73,33 @@ export const ChangePasswordForm = () => {
         <CardBody>
           <TextField
             label="Current Password"
+            type="password"
             placeholder="••••••••••••••"
-            {...register("password")}
-            error={errors.password?.message}
+            {...register("currentPassword")}
+            error={errors.currentPassword?.message}
           />
 
           <TextField
             label="New Password"
+            type="password"
             placeholder="••••••••••••••"
             {...register("newPassword")}
-            error={errors.password?.message}
+            error={errors.newPassword?.message}
           />
 
           <TextField
             label="Confirm Password"
+            type="password"
             placeholder="••••••••••••••"
             {...register("confirmPassword")}
-            error={errors.password?.message}
+            error={errors.confirmPassword?.message}
           />
         </CardBody>
         <CardFooter className="flex justify-end gap-x-3">
-          <Button className="cursor-pointer">Save</Button>
+          <Button className="cursor-pointer">
+            {isPending && <Spinner />}
+            Save
+          </Button>
           <Button
             type="reset"
             className="cursor-pointer"

@@ -1,13 +1,14 @@
 import { Avatar, Menu, MenuTrigger } from "@material-tailwind/react";
 import { LogOut, Settings, User } from "lucide-react";
-import { logout } from "../../services/authService";
+import { useLogout } from "./useLogout";
 import { useNavigate } from "react-router-dom";
 
 export const UserMenue = () => {
   const navigate = useNavigate();
+  const { logout } = useLogout();
 
   const logOut = async () => {
-    if (await logout()) navigate("login");
+    await logout();
   };
 
   return (
