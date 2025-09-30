@@ -1,9 +1,10 @@
 import { Avatar, Menu, MenuTrigger } from "@material-tailwind/react";
-import { LogOut, Settings, User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { useLogout } from "./useLogout";
 import { useNavigate } from "react-router-dom";
+import type { User as UserApp } from "../../types/apiTypes";
 
-export const UserMenue = () => {
+export const UserMenue = ({ user }: { user?: UserApp }) => {
   const navigate = useNavigate();
   const { logout } = useLogout();
 
@@ -15,16 +16,13 @@ export const UserMenue = () => {
     <Menu>
       <MenuTrigger
         as={Avatar}
-        src="profile.jpg"
+        src={user?.avatarUrl || "profile.jpg"}
         alt="Profile picture"
-        className="m-0 h-10 w-10 p-0"
+        className="m-0 h-10 w-10 cursor-pointer p-0"
       />
       <Menu.Content>
         <Menu.Item onClick={() => navigate("profile")}>
           <User className="mr-2 h-[18px] w-[18px]" /> My Profile
-        </Menu.Item>
-        <Menu.Item>
-          <Settings className="mr-2 h-[18px] w-[18px]" /> Edit Profile
         </Menu.Item>
         <hr className="border-surface -mx-1 !my-1" />
         <Menu.Item

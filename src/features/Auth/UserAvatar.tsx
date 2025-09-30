@@ -6,8 +6,33 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { X } from "lucide-react";
+import { useRef, useState } from "react";
 
-export const UserAvatar = () => {
+type UserAvatarProps = {
+  avatarUrl: string;
+  setPreview: React.Dispatch<React.SetStateAction<File | undefined>>;
+};
+
+export const UserAvatar = ({ avatarUrl, setPreview }: UserAvatarProps) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [imageError, setImageError] = useState("");
+
+  const handleUploadOnChange = () => {
+    if (inputRef.current?.files) {
+      if (inputRef.current.files[0].size > 2 * 1024 * 1024) {
+        setImageError("Image must be less or equal 2MB");
+      } else {
+        setPreview(inputRef.current.files[0]);
+        setImageError("");
+      }
+    }
+  };
+
+  const handleUploadClick = () => {
+    const el = inputRef.current;
+    el?.click();
+  };
+
   return (
     <div className="relative flex flex-1 flex-col items-center justify-center">
       <Typography color="default" className="font-bold">
@@ -20,7 +45,7 @@ export const UserAvatar = () => {
       <Dialog>
         <Dialog.Trigger className="relative">
           <Avatar
-            src="profile.jpg"
+            src={avatarUrl}
             alt="Profile Image"
             className="mx-auto mt-4 flex h-30 w-30 cursor-pointer"
           />
@@ -38,7 +63,7 @@ export const UserAvatar = () => {
               <X />
             </Dialog.DismissTrigger>
             <img
-              src="profile.jpg"
+              src={avatarUrl}
               alt="Profile Image"
               className="block max-h-[300px] max-w-[300px] rounded-lg md:max-h-[500px] md:max-w-[500px]"
 
@@ -47,19 +72,39 @@ export const UserAvatar = () => {
           </Dialog.Content>
         </Dialog.Overlay>
       </Dialog>
+      <input
+        className="file:bg-secondary file:text-secondary-foreground file:mr-2 file:rounded file:px-2 file:py-1"
+        accept="Image/*"
+        type="file"
+        hidden
+        onChange={handleUploadOnChange}
+        ref={inputRef}
+      />
+
       <div className="mt-6 flex gap-4">
-        <Button className="cursor-pointer">Upload</Button>
         <Button
           className="cursor-pointer"
-          type="reset"
+          // variant="outline"
+          color="secondary"
+          onClick={handleUploadClick}
+        >
+          Upload
+        </Button>
+        <Button
+          className="cursor-pointer"
+          // type="reset"
           color="error"
-          variant="ghost"
+          variant="outline"
+          onClick={() => setPreview(undefined)}
         >
           Close
         </Button>
       </div>
       <Typography className="mt-4 text-center">
-        Allowed JPG, GIF or PNG. Max size of 800K
+        Allowed JPG, GIF or PNG. Max size of 2MB
+      </Typography>
+      <Typography color="error" className="italic">
+        {imageError}
       </Typography>
     </div>
   );

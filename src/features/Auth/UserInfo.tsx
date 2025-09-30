@@ -19,21 +19,28 @@ export const UserInfo = () => {
       </Typography>
 
       <TextField
-        label="Email"
-        error={errors.email?.message}
-        {...register("email")}
+        label="First Name"
+        error={errors.firstName?.message}
+        {...register("firstName")}
       />
 
       <TextField
-        label="Your name"
-        error={errors.name?.message}
-        {...register("name")}
+        label="Last Name"
+        error={errors.lastName?.message}
+        {...register("lastName")}
+      />
+
+      <TextField
+        label="Email"
+        error={errors.email?.message}
+        {...register("email")}
+        disabled
       />
 
       <TextField
         label="Phone"
-        error={errors.phone?.message}
-        {...register("phone")}
+        error={errors.phoneNumber?.message}
+        {...register("phoneNumber")}
       />
     </div>
   );

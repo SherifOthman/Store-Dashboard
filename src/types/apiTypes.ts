@@ -16,16 +16,17 @@ export type User = {
   email: string;
   phoneNumber: string;
   avatarUrl: string;
-  roles: UserRoles;
+  role: "Customer" | "Staff" | "Manager" | "Admin";
 };
-
-export enum UserRoles {
-  Customer = 1,
-  Staff = 2,
-  Manage = 4,
-  Admin = 8,
-}
 
 export type Auth = {
   accessToken: string;
+};
+
+export type Category = {
+  id: number;
+  name: string;
+  createdAt: string;
+  parentCategoryId: number | null;
+  subCategories: Category[];
 };

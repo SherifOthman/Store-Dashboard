@@ -15,7 +15,6 @@ import { useChangePassword } from "./useChangePassword";
 
 import { useEffect } from "react";
 import { setBackendErrors } from "../../utils/helpers";
-import { ApiError } from "../../services/ApiError";
 
 const ChangePasswordSchema = z
   .object({
@@ -45,9 +44,7 @@ export const ChangePasswordForm = () => {
   });
 
   useEffect(() => {
-    if (error instanceof ApiError) {
-      setBackendErrors<ChangePasswordFormType>(setError, error.errors);
-    }
+    if (error) setBackendErrors(setError, error.errors);
   }, [error, setError]);
 
   const onSubmit = async (data: ChangePasswordFormType) => {
@@ -97,7 +94,7 @@ export const ChangePasswordForm = () => {
         </CardBody>
         <CardFooter className="flex justify-end gap-x-3">
           <Button className="cursor-pointer">
-            {isPending && <Spinner />}
+            {isPending && <Spinner className="mr-2" />}
             Save
           </Button>
           <Button

@@ -1,11 +1,10 @@
-import { Input, Button, Typography, Spinner } from "@material-tailwind/react";
+import { Button, Spinner } from "@material-tailwind/react";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Lock, User } from "lucide-react";
 import { useLogin } from "./useLogin";
+import { TextField } from "../../components/TextField";
 
 const formSchema = z.object({
   email: z.email("Invalid email address"),
@@ -31,55 +30,23 @@ export const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col">
-      <div className="mt-2 mb-4 space-y-1.5">
-        <Typography
-          as="label"
-          htmlFor="email"
-          type="small"
-          color="default"
-          className="font-semibold"
-        >
-          Email
-        </Typography>
-        <Input
-          id="email"
-          type="email"
-          placeholder="someone@example.com"
-          {...register("email")}
-          isError={!!errors.email}
-        >
-          <Input.Icon>
-            <User className="h-full w-full" />
-          </Input.Icon>
-        </Input>
-        <Typography type="small" color="error" className="mt-1 block">
-          {errors.email?.message || ""}
-        </Typography>
-      </div>
-      <div className="mb-4 space-y-1.5">
-        <Typography
-          as="label"
-          htmlFor="password"
-          type="small"
-          color="default"
-          className="font-semibold"
-        >
-          Password
-        </Typography>
-        <Input
-          id="password"
-          type="password"
-          placeholder="************"
-          {...register("password")}
-        >
-          <Input.Icon>
-            <Lock className="h-full w-full" />
-          </Input.Icon>
-        </Input>
-        <Typography type="small" color="error" className="mt-1 block">
-          {errors.password?.message || ""}
-        </Typography>
-      </div>
+      <TextField
+        label="Email"
+        type="email"
+        icon={User}
+        error={errors.email?.message}
+        placeholder="omeone@example.com"
+        {...register("email")}
+      />
+
+      <TextField
+        label="Password"
+        type="password"
+        icon={Lock}
+        error={errors.password?.message}
+        placeholder="•••••••••••••"
+        {...register("password")}
+      />
       <Button>
         {isPending && <Spinner className="mr-2" />}
         Sign In

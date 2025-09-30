@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { changePassword as changePasswordApi } from "../../services/usersService";
 import toast from "react-hot-toast";
+import type { ApiError } from "../../services/ApiError";
 
 export const useChangePassword = () => {
   const {
@@ -12,8 +13,8 @@ export const useChangePassword = () => {
     onSuccess: () => {
       toast.success("Password changed successfully.");
     },
-    onError: (error) => {
-      console.log("ERROR: ", error.message);
+    onError: (error: ApiError) => {
+      console.log("ERROR: ", error);
       toast.error(error.message);
     },
   });
