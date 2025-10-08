@@ -1,12 +1,12 @@
-import {
-  Avatar,
-  Button,
-  Dialog,
-  IconButton,
-  Typography,
-} from "@material-tailwind/react";
-import { X } from "lucide-react";
 import { useRef, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 type UserAvatarProps = {
   avatarUrl: string;
@@ -16,96 +16,72 @@ type UserAvatarProps = {
 export const UserAvatar = ({ avatarUrl, setPreview }: UserAvatarProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [imageError, setImageError] = useState("");
+  const [open, setOpen] = useState(false);
 
   const handleUploadOnChange = () => {
-    if (inputRef.current?.files) {
-      if (inputRef.current.files[0].size > 2 * 1024 * 1024) {
-        setImageError("Image must be less or equal 2MB");
-      } else {
-        setPreview(inputRef.current.files[0]);
-        setImageError("");
-      }
+    const file = inputRef.current?.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024)
+      setImageError("Image must be less or equal 2MB");
+    else {
+      setPreview(file);
+      setImageError("");
     }
   };
 
-  const handleUploadClick = () => {
-    const el = inputRef.current;
-    el?.click();
-  };
+  const handleUploadClick = () => inputRef.current?.click();
 
   return (
-    <div className="relative flex flex-1 flex-col items-center justify-center">
-      <Typography color="default" className="font-bold">
-        Change Profile
-      </Typography>
-      <Typography className="text-foreground mt-2">
+    <div className="flex flex-col items-center justify-center space-y-2">
+      <h3 className="font-bold">Change Profile</h3>
+      <p className="text-muted-foreground mb-4 text-center">
         Change your profile picture from here
-      </Typography>
+      </p>
 
-      <Dialog>
-        <Dialog.Trigger className="relative">
-          <Avatar
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <img
             src={avatarUrl}
-            alt="Profile Image"
-            className="mx-auto mt-4 flex h-30 w-30 cursor-pointer"
+            alt="Profile"
+            className="h-28 w-28 cursor-pointer rounded-full object-cover"
           />
-        </Dialog.Trigger>
-        <Dialog.Overlay>
-          <Dialog.Content className="w-auto max-w-fit">
-            <Dialog.DismissTrigger
-              as={IconButton}
-              size="sm"
-              variant="solid"
-              color="secondary"
-              className="absolute top-6 right-7"
-              isCircular
-            >
-              <X />
-            </Dialog.DismissTrigger>
-            <img
-              src={avatarUrl}
-              alt="Profile Image"
-              className="block max-h-[300px] max-w-[300px] rounded-lg md:max-h-[500px] md:max-w-[500px]"
+        </DialogTrigger>
 
-              // className="block h-96 w-36"
-            />
-          </Dialog.Content>
-        </Dialog.Overlay>
+        <DialogContent className="max-w-md">
+          <img
+            src={avatarUrl}
+            alt="Profile"
+            className="w-full rounded-lg object-cover"
+          />
+        </DialogContent>
       </Dialog>
+
       <input
-        className="file:bg-secondary file:text-secondary-foreground file:mr-2 file:rounded file:px-2 file:py-1"
-        accept="Image/*"
         type="file"
+        accept="image/*"
         hidden
-        onChange={handleUploadOnChange}
         ref={inputRef}
+        onChange={handleUploadOnChange}
       />
 
-      <div className="mt-6 flex gap-4">
+      <div className="mt-3 flex gap-2">
+        <Button onClick={handleUploadClick}>Upload</Button>
         <Button
-          className="cursor-pointer"
-          // variant="outline"
-          color="secondary"
-          onClick={handleUploadClick}
-        >
-          Upload
-        </Button>
-        <Button
-          className="cursor-pointer"
-          // type="reset"
-          color="error"
           variant="outline"
+          className="text-destructive"
           onClick={() => setPreview(undefined)}
         >
           Close
         </Button>
       </div>
-      <Typography className="mt-4 text-center">
+
+      <p className="text-muted-foreground text-center text-sm">
         Allowed JPG, GIF or PNG. Max size of 2MB
-      </Typography>
-      <Typography color="error" className="italic">
-        {imageError}
-      </Typography>
+      </p>
+      {imageError && (
+        <p className="text-destructive text-sm italic">{imageError}</p>
+      )}
     </div>
   );
 };

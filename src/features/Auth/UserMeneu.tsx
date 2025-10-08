@@ -1,38 +1,41 @@
-import { Avatar, Menu, MenuTrigger } from "@material-tailwind/react";
+import { Avatar } from "@radix-ui/react-avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { LogOut, User } from "lucide-react";
 import { useLogout } from "./useLogout";
 import { useNavigate } from "react-router-dom";
 import type { User as UserApp } from "../../types/apiTypes";
+import { AvatarImage } from "@/components/ui/avatar";
 
-export const UserMenue = ({ user }: { user?: UserApp }) => {
+export const UserMenu = ({ user }: { user?: UserApp }) => {
   const navigate = useNavigate();
   const { logout } = useLogout();
 
-  const logOut = async () => {
-    await logout();
-  };
+  const logOut = async () => await logout();
 
   return (
-    <Menu>
-      <MenuTrigger
-        as={Avatar}
-        src={user?.avatarUrl || "profile.jpg"}
-        alt="Profile picture"
-        className="m-0 h-10 w-10 cursor-pointer p-0"
-      />
-      <Menu.Content>
-        <Menu.Item onClick={() => navigate("profile")}>
-          <User className="mr-2 h-[18px] w-[18px]" /> My Profile
-        </Menu.Item>
-        <hr className="border-surface -mx-1 !my-1" />
-        <Menu.Item
-          onClick={logOut}
-          className="text-error hover:bg-error/10 hover:text-error focus:bg-error/10 focus:text-error dark:hover:text-error dark:focus:text-error"
-        >
-          <LogOut className="mr-2 h-[18px] w-[18px]" />
-          Logout
-        </Menu.Item>
-      </Menu.Content>
-    </Menu>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Avatar className="h-10 w-10 cursor-pointer">
+          <AvatarImage
+            src={user?.avatarUrl || "profile.jpg"}
+            alt="Profile picture"
+          />
+        </Avatar>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => navigate("profile")}>
+          <User className="mr-2 h-4 w-4" /> My Profile
+        </DropdownMenuItem>
+        <DropdownMenuItem className="text-destructive" onClick={logOut}>
+          <LogOut className="mr-2 h-4 w-4" /> Logout
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { updateCategory as updateCategoryApi } from "../../../services/categoriesService";
-import toast from "react-hot-toast";
 import type { ApiError } from "../../../services/ApiError";
+import { toast } from "sonner";
 
 export const useUpdateCategory = () => {
   const { mutateAsync, isPending, error, isError } = useMutation({

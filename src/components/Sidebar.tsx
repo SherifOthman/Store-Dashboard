@@ -1,10 +1,10 @@
 import { Logo } from "./Logo";
-import { cn } from "../utils/cn";
 import { SidebarNav } from "./SidebarNav";
 import { useSidebar } from "../contexts/SidebarContext";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useOutside } from "../hooks/useOutside";
 import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 export const Sidebar = () => {
   const isMobile = useIsMobile();
@@ -55,7 +55,7 @@ const MobileSidebar = () => {
     >
       <aside
         className={cn(
-          "bg-sidebar text-sidebar-foreground border-foreground/40 top-0 z-30 w-[450px] flex-col overflow-hidden border-r bg-white p-2",
+          "text-sidebar-foreground border-foreground/40 top-0 z-30 w-[450px] flex-col overflow-hidden border-r bg-white p-2 dark:bg-black",
         )}
         ref={ref}
       >

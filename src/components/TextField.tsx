@@ -1,44 +1,43 @@
-import { Input, Typography, type InputProps } from "@material-tailwind/react";
+import * as React from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import type { LucideIcon } from "lucide-react";
-import React from "react";
 
-type TextFieldProps = InputProps & {
+type TextFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   error?: string;
   icon?: LucideIcon;
 };
 
-export const TextField = React.forwardRef<typeof Input, TextFieldProps>(
+export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
   ({ label, error, icon: Icon, ...props }, ref) => {
     const id = React.useId();
 
     return (
-      <Typography
-        as="label"
-        htmlFor={id}
-        color="default"
-        className="mb-6 block space-y-1.5"
-      >
-        <span className="text-sm font-semibold">{label}</span>
-        <Input
-          ref={ref}
-          {...props}
-          id={id}
-          isError={Boolean(error)}
-          color={error ? "error" : "primary"}
-        >
+      <div className="mb-6 w-full">
+        <Label htmlFor={id} className="mb-1 block text-sm font-semibold">
+          {label}
+        </Label>
+
+        <div className="relative">
           {Icon && (
-            <Input.Icon>
-              <Icon className="h-full w-full" />
-            </Input.Icon>
+            <Icon
+              className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
+              size={18}
+            />
           )}
-        </Input>
-        {error && (
-          <Typography type="small" color="error">
-            {error}
-          </Typography>
-        )}
-      </Typography>
+          <Input
+            id={id}
+            ref={ref}
+            className={`pl-${Icon ? "10" : "3"} ${error ? "border-destructive focus-visible:ring-destructive" : ""}`}
+            {...props}
+          />
+        </div>
+
+        {error && <p className="text-destructive mt-1 text-sm">{error}</p>}
+      </div>
     );
   },
 );
+
+TextField.displayName = "TextField";

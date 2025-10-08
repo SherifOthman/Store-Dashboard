@@ -1,19 +1,21 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
-import { UserInfo } from "./UserInfo";
-import { UserAvatar } from "./UserAvatar";
-import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
-import { useCurrentUser } from "./useCurrentUser";
-import { Loader } from "../../components/Loader";
+import { z } from "zod";
 import { useEffect, useState } from "react";
+import { useCurrentUser } from "./useCurrentUser";
 import { useUpdateCurrentUser } from "./useUpdateCurrentUser";
 import { setBackendErrors } from "../../utils/helpers";
+import { UserInfo } from "./UserInfo";
+import { UserAvatar } from "./UserAvatar";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 const UserInfoSchema = z.object({
   firstName: z.string().min(3, "Name must be at least 3 characters long"),
   lastName: z.string().min(3, "Name must be at least 3 characters long"),
-  email: z.email("Please enter a valid email address"),
+  email: z.string().email("Please enter a valid email address"),
   phoneNumber: z
     .string()
     .regex(/^\d{11}$/, "Phone number must be exactly 11 digits"),
@@ -24,7 +26,7 @@ export type UserInfoFormType = z.infer<typeof UserInfoSchema>;
 export const ChangeUserInfoForm = () => {
   const { currentUser, isLoading } = useCurrentUser();
   const { isPending, error, updateCurrentUser } = useUpdateCurrentUser();
-  const [preview, setPreview] = useState<File | undefined>(undefined);
+  const [preview, setPreview] = useState<File>();
 
   const methods = useForm<UserInfoFormType>({
     resolver: zodResolver(UserInfoSchema),
@@ -34,33 +36,38 @@ export const ChangeUserInfoForm = () => {
 
   useEffect(() => {
     if (currentUser)
-      methods.reset({
+      reset({
         firstName: currentUser.firstName,
         lastName: currentUser.lastName,
         email: currentUser.email,
         phoneNumber: currentUser.phoneNumber,
       });
-  }, [currentUser, methods]);
+  }, [currentUser, reset]);
 
   useEffect(() => {
-    if (error) setBackendErrors<UserInfoFormType>(setError, error?.errors);
+    if (error) setBackendErrors<UserInfoFormType>(setError, error.errors);
   }, [error, setError]);
 
   const onSubmit = async (data: UserInfoFormType) => {
     await updateCurrentUser({ ...data, imageFile: preview });
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading)
+    return (
+      <div className="flex justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin" />
+      </div>
+    );
 
   return (
-    <Card className="relative mx-auto mt-5 w-3/4">
-      <CardBody className="flex flex-col gap-6 p-4 md:flex-row">
-        <Typography
-          className="bg-surface absolute top-5 -left-9 w-36 -rotate-45 rounded text-center font-bold"
-          color="info"
-        >
-          {currentUser?.role}
-        </Typography>
+    <Card className="relative mx-auto mt-5 max-w-3xl">
+      <Badge
+        variant="destructive"
+        className="absolute top-6 left-1 -rotate-45 text-base"
+      >
+        {currentUser?.role}
+      </Badge>
+      <CardContent className="mt-5 flex flex-col gap-6 md:flex-row">
         <UserAvatar
           avatarUrl={
             (preview && URL.createObjectURL(preview)) ||
@@ -69,30 +76,28 @@ export const ChangeUserInfoForm = () => {
           }
           setPreview={setPreview}
         />
+
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} className="flex-1 space-y-4">
             <UserInfo />
-            <div className="flex justify-end">
-              <Button
-                className="cursor-pointer"
-                disabled={isPending}
-                type="submit"
-              >
+
+            <div className="flex justify-end gap-2">
+              <Button type="submit" disabled={isPending}>
+                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Save
               </Button>
               <Button
-                className="cursor-pointer"
-                variant="ghost"
-                color="error"
                 type="button"
+                variant="ghost"
                 onClick={() => reset()}
+                className="text-destructive"
               >
                 Cancel
               </Button>
             </div>
           </form>
         </FormProvider>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

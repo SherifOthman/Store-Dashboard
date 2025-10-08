@@ -1,21 +1,22 @@
 import { ToggleDarkMode } from "./ToggleDarkMode";
 import { ToggleSidebar } from "./ToggleSidebar";
-import { UserMenue } from "../features/Auth/UserMeneu";
-import { Typography } from "@material-tailwind/react";
+import { UserMenu } from "../features/Auth/UserMeneu";
 import { useCurrentUser } from "../features/Auth/useCurrentUser";
 
 export const Header = () => {
   const { currentUser } = useCurrentUser();
-  const fullName = currentUser?.firstName + " " + currentUser?.lastName;
+  const fullName =
+    `${currentUser?.firstName || ""} ${currentUser?.lastName || ""}`.trim();
+
   return (
-    <header className="bg-background text-sidebar-foreground border-foreground/40 sticky top-0 z-10 flex items-center justify-between border-b px-4 py-2 shadow">
+    <header className="border-foreground/40 bg-background text-foreground sticky top-0 z-10 flex items-center justify-between border-b px-4 py-2 shadow-sm">
       <ToggleSidebar />
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-3">
         <ToggleDarkMode />
-        <hr className="bg-foreground/80 h-6 w-[1px] rounded" />
-        <Typography>Hi,</Typography>
-        <Typography color="default">{fullName}</Typography>
-        <UserMenue user={currentUser} />
+        <div className="bg-foreground/30 h-6 w-px" />
+        <span className="text-sm">Hi,</span>
+        <span className="font-medium">{fullName}</span>
+        <UserMenu user={currentUser} />
       </div>
     </header>
   );

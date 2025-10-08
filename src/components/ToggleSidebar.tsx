@@ -1,13 +1,18 @@
 import { PanelLeftClose, PanelRightClose } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useSidebar } from "../contexts/SidebarContext";
-import { IconButton } from "@material-tailwind/react";
 
 export const ToggleSidebar = () => {
   const { open, toggle } = useSidebar();
 
   return (
-    <IconButton variant="ghost" onClick={toggle}>
+    <Button
+      variant="ghost"
+      size="xlIcon"
+      onClick={toggle}
+      className="rounded-full"
+    >
       {open ? <PanelLeftClose /> : <PanelRightClose />}
-    </IconButton>
+    </Button>
   );
 };

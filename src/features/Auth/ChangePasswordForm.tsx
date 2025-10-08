@@ -1,20 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Spinner,
-  Typography,
-} from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
-import z from "zod";
-import { TextField } from "../../components/TextField";
-import { useChangePassword } from "./useChangePassword";
-
+import { z } from "zod";
 import { useEffect } from "react";
 import { setBackendErrors } from "../../utils/helpers";
+import { useChangePassword } from "./useChangePassword";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+  CardTitle,
+} from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
+import { TextField } from "@/components/TextField";
 
 const ChangePasswordSchema = z
   .object({
@@ -52,22 +51,20 @@ export const ChangePasswordForm = () => {
       currentPassword: data.currentPassword,
       newPassword: data.newPassword,
     });
-
     reset();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Card className="mx-auto mt-5 w-3/4 p-4 pb-0">
+      <Card className="mx-auto mt-5 max-w-3xl">
         <CardHeader>
-          <Typography color="default" className="font-bold">
-            Change Password
-          </Typography>
-          <Typography className="mt-2">
+          <CardTitle>Change Password</CardTitle>
+          <p className="text-muted-foreground text-sm">
             To change your password please confirm here
-          </Typography>
+          </p>
         </CardHeader>
-        <CardBody>
+
+        <CardContent>
           <TextField
             label="Current Password"
             type="password"
@@ -75,7 +72,6 @@ export const ChangePasswordForm = () => {
             {...register("currentPassword")}
             error={errors.currentPassword?.message}
           />
-
           <TextField
             label="New Password"
             type="password"
@@ -83,7 +79,6 @@ export const ChangePasswordForm = () => {
             {...register("newPassword")}
             error={errors.newPassword?.message}
           />
-
           <TextField
             label="Confirm Password"
             type="password"
@@ -91,18 +86,18 @@ export const ChangePasswordForm = () => {
             {...register("confirmPassword")}
             error={errors.confirmPassword?.message}
           />
-        </CardBody>
-        <CardFooter className="flex justify-end gap-x-3">
-          <Button className="cursor-pointer">
-            {isPending && <Spinner className="mr-2" />}
+        </CardContent>
+
+        <CardFooter className="flex justify-end gap-3">
+          <Button type="submit" disabled={isPending}>
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save
           </Button>
           <Button
             type="reset"
-            className="cursor-pointer"
             variant="ghost"
-            color="error"
             onClick={() => reset()}
+            className="text-destructive"
           >
             Cancel
           </Button>

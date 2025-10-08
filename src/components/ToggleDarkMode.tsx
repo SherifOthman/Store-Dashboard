@@ -1,13 +1,18 @@
 import { Moon, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useDarkMode } from "../hooks/useDarkMode";
-import { IconButton } from "@material-tailwind/react";
 
 export const ToggleDarkMode = () => {
   const { isDark, ToggleTheme } = useDarkMode();
 
   return (
-    <IconButton variant="ghost" onClick={ToggleTheme} isCircular>
-      {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-    </IconButton>
+    <Button
+      variant="ghost"
+      size="xlIcon"
+      onClick={ToggleTheme}
+      className="rounded-full"
+    >
+      {isDark ? <Sun /> : <Moon />}
+    </Button>
   );
 };

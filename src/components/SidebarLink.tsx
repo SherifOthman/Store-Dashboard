@@ -1,6 +1,6 @@
+import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
 import { Link, type LinkProps } from "react-router-dom";
-import { cn } from "../utils/cn";
 
 type SidebarLinkProps = {
   to: string;

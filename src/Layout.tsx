@@ -6,7 +6,7 @@ import { SidebarProvider } from "./contexts/SidebarContext";
 export const Layout = () => {
   return (
     <SidebarProvider>
-      <div className="bg-background text-foreground flex">
+      <div className="text-foreground flex">
         <Sidebar />
         <div className="flex-1 flex-col">
           <Header />

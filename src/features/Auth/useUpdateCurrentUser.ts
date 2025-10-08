@@ -3,8 +3,8 @@ import {
   updateCurrentUser,
   type UpdateCurrentUserType,
 } from "../../services/usersService";
-import toast from "react-hot-toast";
 import type { ApiError } from "../../services/ApiError";
+import { toast } from "sonner";
 
 export const useUpdateCurrentUser = () => {
   const queryClient = useQueryClient();
