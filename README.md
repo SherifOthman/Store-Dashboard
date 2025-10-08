@@ -1,8 +1,5 @@
----
-
 ## 🔵 Frontend (Store Dashboard - React)
 
-```markdown
 # 📊 OnlineStore Admin Dashboard
 
 This is the **admin dashboard frontend** for the OnlineStore project.  
@@ -39,7 +36,7 @@ The app is built with **React**, **TypeScript**, and styled with **TailwindCSS**
 
 - [x] Authentication with JWT (Access + Refresh tokens)
 - [x] Axios Interceptor for automatic token refresh
-- [x] Logged in user managment
+- [x] Logged in user management
 - [ ] Dashboard layout with navigation
 - [ ] User management (CRUD)
 - [ ] Product management (CRUD)
